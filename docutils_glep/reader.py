@@ -16,9 +16,24 @@ Gentoo Linux Enhancement Proposal (GLEP) Reader.
 __docformat__ = 'reStructuredText'
 
 
+from docutils.parsers import rst
 from docutils.readers import pep as pepsreader
 from docutils.transforms import peps
 from docutils_glep.transforms import GLEPHeaders
+
+
+class PreambledRstParser(rst.Parser):
+    """GLEP parser class capable of reading YAML preamble."""
+
+    def parse(self, inputstring, document):
+        if inputstring.startswith('---\n'):
+            spl = inputstring.split('---\n', 2)
+            assert not spl[0]
+            # TODO: validate spl[0] as YAML
+            # remove ---s to let regular parser handle it
+            inputstring = ''.join(spl)
+
+        super(PreambledRstParser, self).parse(inputstring, document)
 
 
 class Reader(pepsreader.Reader):
@@ -34,3 +49,9 @@ class Reader(pepsreader.Reader):
         transforms.remove(peps.Headers)
         transforms.append(GLEPHeaders)
         return transforms
+
+    def __init__(self, parser=None, parser_name=None):
+        """`parser` should be ``None``."""
+        if parser is None:
+            parser = PreambledRstParser(rfc2822=True, inliner=self.inliner_class())
+        super(Reader, self).__init__(parser, parser_name)
