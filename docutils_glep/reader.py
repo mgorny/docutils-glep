@@ -16,6 +16,7 @@ Gentoo Linux Enhancement Proposal (GLEP) Reader.
 __docformat__ = 'reStructuredText'
 
 
+from docutils import DataError
 from docutils.parsers import rst
 from docutils.readers import pep as pepsreader
 from docutils.transforms import peps
@@ -29,7 +30,15 @@ class PreambledRstParser(rst.Parser):
         if inputstring.startswith('---\n'):
             spl = inputstring.split('---\n', 2)
             assert not spl[0]
-            # TODO: validate spl[0] as YAML
+            try:
+                import yaml
+            except ImportError:
+                pass
+            else:
+                try:
+                    yaml.load(spl[1])
+                except Exception as e:
+                    raise DataError('Header preamble is not valid YAML:\n%s' % e)
             # remove ---s to let regular parser handle it
             inputstring = ''.join(spl)
 
