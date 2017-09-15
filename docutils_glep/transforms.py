@@ -26,6 +26,24 @@ from docutils import nodes, utils, DataError
 from docutils.transforms.peps import Headers, mask_email
 
 
+required_fields = frozenset((
+    'GLEP',
+    'Title',
+    'Author',
+    'Type',
+    'Status',
+    'Version',
+    'Created',
+    'Last-Modified',
+    'Post-History',
+    'Content-Type'))
+
+optional_fields = frozenset((
+    'Requires',
+    'Replaces',
+    'Replaced-By'))
+
+
 class GLEPHeaders(Headers):
 
     """
@@ -80,7 +98,10 @@ class GLEPHeaders(Headers):
         if len(header) < 2 or header[1][0].astext().lower() != 'title':
             raise DataError('No title!')
         for field in header:
-            name = field[0].astext().lower()
+            name = field[0].astext()
+            if name not in required_fields and name not in optional_fields:
+                raise DataError('Incorrect GLEP header field: %s' % name)
+
             body = field[1]
             if len(body) > 1:
                 raise DataError('GLEP header field body contains multiple '
@@ -94,11 +115,11 @@ class GLEPHeaders(Headers):
                 # empty
                 continue
             para = body[0]
-            if name == 'author':
+            if name == 'Author':
                 for node in para:
                     if isinstance(node, nodes.reference):
                         node.replace_self(mask_email(node))
-            elif name in ('replaces', 'replaced-by', 'requires'):
+            elif name in ('Replaces', 'Replaced-By', 'Requires'):
                 newbody = []
                 space = nodes.Text(' ')
                 for refpep in re.split(',?\s+', body.astext()):
@@ -109,7 +130,7 @@ class GLEPHeaders(Headers):
                                 + self.pep_url % pepno)))
                     newbody.append(space)
                 para[:] = newbody[:-1] # drop trailing space
-            elif name == 'content-type':
+            elif name == 'Content-Type':
                 pep_type = para.astext()
                 uri = 'glep-0002.html'
                 para[:] = [nodes.reference('', pep_type, refuri=uri)]
