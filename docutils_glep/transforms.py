@@ -43,6 +43,21 @@ optional_fields = frozenset((
     'Replaces',
     'Replaced-By'))
 
+valid_types = frozenset((
+    'Informational',
+    'Standards Track'))
+
+valid_statuses = frozenset((
+    'Draft',
+    'Active',
+    'Accepted',
+    'Deferred',
+    'Withdrawn',
+    'Rejected',
+    'Final',
+    'Replaced',
+    'Moribund'))
+
 
 class GLEPHeaders(Headers):
 
@@ -121,6 +136,12 @@ class GLEPHeaders(Headers):
                 for node in para:
                     if isinstance(node, nodes.reference):
                         node.replace_self(mask_email(node))
+            elif name == 'Type':
+                if para.astext() not in valid_types:
+                    raise DataError('Invalid GLEP type: %s' % para.astext())
+            elif name == 'Status':
+                if para.astext() not in valid_statuses:
+                    raise DataError('Invalid GLEP status: %s' % para.astext())
             elif name in ('Replaces', 'Replaced-By', 'Requires'):
                 newbody = []
                 space = nodes.Text(' ')
