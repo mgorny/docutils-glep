@@ -97,10 +97,12 @@ class GLEPHeaders(Headers):
                             'header.')
         if len(header) < 2 or header[1][0].astext().lower() != 'title':
             raise DataError('No title!')
+        seen = set()
         for field in header:
             name = field[0].astext()
             if name not in required_fields and name not in optional_fields:
                 raise DataError('Incorrect GLEP header field: %s' % name)
+            seen.add(name)
 
             body = field[1]
             if len(body) > 1:
@@ -134,3 +136,6 @@ class GLEPHeaders(Headers):
                 pep_type = para.astext()
                 uri = 'glep-0002.html'
                 para[:] = [nodes.reference('', pep_type, refuri=uri)]
+
+        if required_fields - seen:
+            raise DataError('Missing GLEP header field(s): %s' % ', '.join(required_fields - seen))
