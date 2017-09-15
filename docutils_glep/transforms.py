@@ -15,7 +15,6 @@ Transforms for PEP processing.
 - `Headers`: Used to transform a PEP's initial RFC-2822 header.  It remains a
   field list, but some entries get processed.
 - `Contents`: Auto-inserts a table of contents.
-- `PEPZero`: Special processing for PEP 0.
 """
 
 __docformat__ = 'reStructuredText'
@@ -24,7 +23,7 @@ import os
 import re
 import time
 from docutils import nodes, utils, DataError
-from docutils.transforms.peps import Headers, PEPZero, mask_email
+from docutils.transforms.peps import Headers, mask_email
 
 
 class GLEPHeaders(Headers):
@@ -78,11 +77,6 @@ class GLEPHeaders(Headers):
         if pep is None:
             raise DataError('Document does not contain an RFC-2822 "GLEP" '
                             'header.')
-        if pep == 0:
-            # Special processing for PEP 0.
-            pending = nodes.pending(PEPZero)
-            self.document.insert(1, pending)
-            self.document.note_pending(pending)
         if len(header) < 2 or header[1][0].astext().lower() != 'title':
             raise DataError('No title!')
         for field in header:
