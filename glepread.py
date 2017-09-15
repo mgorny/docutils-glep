@@ -1,3 +1,8 @@
+# docutils GLEP support
+# Copyright (c) 2017 Gentoo Foundation
+# Placed in public domain
+# based on PEP code by:
+#
 # Author: David Goodger
 # Contact: goodger@users.sourceforge.net
 # Revision: $Revision: 1.1 $

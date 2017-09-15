@@ -1,6 +1,9 @@
 
 """
-PEP HTML Writer.
+GLEP HTML Writer.
+Copyright (c) 2017 Gentoo Foundation
+Placed in public domain
+based on PEP code from docutils
 """
 
 __docformat__ = 'reStructuredText'
