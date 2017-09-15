@@ -17,7 +17,8 @@ __docformat__ = 'reStructuredText'
 
 
 from docutils.readers import pep as pepsreader
-from docutils.transforms import gleps, peps
+from docutils.transforms import peps
+from docutils_glep.transforms import GLEPHeaders
 
 
 class Reader(pepsreader.Reader):
@@ -31,5 +32,5 @@ class Reader(pepsreader.Reader):
         """Parse headers for gleps, not peps."""
         transforms = pepsreader.Reader.get_transforms(self)
         transforms.remove(peps.Headers)
-        transforms.append(gleps.GLEPHeaders)
+        transforms.append(GLEPHeaders)
         return transforms

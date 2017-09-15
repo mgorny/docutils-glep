@@ -28,5 +28,6 @@ from docutils.core import publish_cmdline, default_description
 description = ('Generates (X)HTML from reStructuredText-format GLEP files.  '
                + default_description)
 
-publish_cmdline(reader_name='glep', writer_name='glep_html',
+publish_cmdline(reader_name='docutils_glep',
+                writer_name='docutils_glep',
                 description=description)
