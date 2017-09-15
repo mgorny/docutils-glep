@@ -19,6 +19,7 @@ Transforms for PEP processing.
 
 __docformat__ = 'reStructuredText'
 
+import datetime
 import os
 import re
 import time
@@ -57,6 +58,8 @@ valid_statuses = frozenset((
     'Final',
     'Replaced',
     'Moribund'))
+
+version_regex = re.compile('\d+(\.\d+)?')
 
 
 class GLEPHeaders(Headers):
@@ -142,6 +145,21 @@ class GLEPHeaders(Headers):
             elif name == 'Status':
                 if para.astext() not in valid_statuses:
                     raise DataError('Invalid GLEP status: %s' % para.astext())
+            elif name == 'Version':
+                v = para.astext()
+                if not version_regex.match(v):
+                    raise DataError('Invalid GLEP version: %s' % para.astext())
+            elif name in ('Created', 'Last-Modified'):
+                try:
+                    datetime.datetime.strptime(para.astext(), '%Y-%m-%d')
+                except ValueError:
+                    raise DataError('Invalid ISO8601 date in %s: %s' % (name, para.astext()))
+            elif name == 'Post-History':
+                for v in para.astext().split(','):
+                    try:
+                        datetime.datetime.strptime(v.strip(), '%Y-%m-%d')
+                    except ValueError:
+                        raise DataError('Invalid ISO8601 date in %s: %s' % (name, v.strip()))
             elif name in ('Replaces', 'Replaced-By', 'Requires'):
                 newbody = []
                 space = nodes.Text(' ')
@@ -155,6 +173,8 @@ class GLEPHeaders(Headers):
                 para[:] = newbody[:-1] # drop trailing space
             elif name == 'Content-Type':
                 pep_type = para.astext()
+                if pep_type != 'text/x-rst':
+                    raise DataError('Incorrect Content-Type: %s' % pep_type)
                 uri = 'glep-0002.html'
                 para[:] = [nodes.reference('', pep_type, refuri=uri)]
 
