@@ -90,13 +90,6 @@ class GLEPHeaders(Headers):
                     raise DataError('GLEP header field body may only contain '
                                     'a single paragraph:\n%s'
                                     % field.pformat(level=1))
-            elif name == 'last-modified':
-                date = time.strftime(
-                      '%d-%b-%Y',
-                      time.localtime(os.stat(self.document['source'])[8]))
-                if cvs_url:
-                    body += nodes.paragraph(
-                        '', '', nodes.reference('', date, refuri=cvs_url))
             else:
                 # empty
                 continue
@@ -105,10 +98,6 @@ class GLEPHeaders(Headers):
                 for node in para:
                     if isinstance(node, nodes.reference):
                         node.replace_self(mask_email(node))
-            elif name == 'discussions-to':
-                for node in para:
-                    if isinstance(node, nodes.reference):
-                        node.replace_self(mask_email(node, pep))
             elif name in ('replaces', 'replaced-by', 'requires'):
                 newbody = []
                 space = nodes.Text(' ')
@@ -120,14 +109,7 @@ class GLEPHeaders(Headers):
                                 + self.pep_url % pepno)))
                     newbody.append(space)
                 para[:] = newbody[:-1] # drop trailing space
-            elif name == 'last-modified':
-                utils.clean_rcs_keywords(para, self.rcs_keyword_substitutions)
-                if cvs_url:
-                    date = para.astext()
-                    para[:] = [nodes.reference('', date, refuri=cvs_url)]
             elif name == 'content-type':
                 pep_type = para.astext()
                 uri = 'glep-0002.html'
                 para[:] = [nodes.reference('', pep_type, refuri=uri)]
-            elif name == 'version' and len(body):
-                utils.clean_rcs_keywords(para, self.rcs_keyword_substitutions)
