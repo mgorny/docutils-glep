@@ -34,9 +34,6 @@ class Writer(pep_html.Writer):
     settings_default_overrides = {
         'stylesheet_path': default_stylesheet_path,
         'template': default_template_path,
-        'python_home': 'http://www.gentoo.org',
-        'pep_home': 'http://www.gentoo.org/proj/en/glep',
-        'pep_base_url': 'http://www.gentoo.org/proj/en/glep',
         'no_random': '1',
         'generator': '1',
         'datestamp': '%Y-%m-%d %H:%M UTC',

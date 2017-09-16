@@ -87,6 +87,8 @@ class GLEPHeaders(Headers):
               'rfc2822' not in header['classes']:
             raise DataError('Document does not begin with an RFC-2822 '
                             'header; it is not a GLEP.')
+        header['classes'].extend(('table-bordered', 'table-condensed',
+            'table-striped', 'pull-right'))
         pep = None
         for field in header:
             if field[0].astext().lower() == 'glep': # should be the first field
