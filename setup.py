@@ -7,7 +7,7 @@ from distutils.core import setup
 
 setup(
     name='docutils_glep',
-    version='0.5',
+    version='1.0',
     author='Gentoo Foundation',
     author_email='glep@gentoo.org',
     url='http://github.com/gentoo/docutils-glep',
