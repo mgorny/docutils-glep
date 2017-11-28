@@ -7,7 +7,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='docutils_glep',
-    version='1.0',
+    version='1.1',
     description='docutils modules & wrapper to process Gentoo Linux Extension Proposals',
 
     author='Gentoo Foundation',
