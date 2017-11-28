@@ -16,7 +16,12 @@ setup(
 
     packages=find_packages(),
     package_data={'docutils_glep.html_writer': ['*.css', '*.txt']},
-    scripts=['glep'],
+
+    entry_points={
+        'console_scripts': [
+            'glep = docutils_glep.cli:main',
+        ],
+    },
 
     install_requires=['docutils'],
 
