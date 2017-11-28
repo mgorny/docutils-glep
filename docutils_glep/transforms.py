@@ -68,7 +68,7 @@ class GLEPHeaders(Headers):
     Process fields in a GLEP's initial RFC-2822 header.
     """
 
-    pep_url = 'glep-%04d.html'
+    pep_url = 'https://www.gentoo.org/glep/glep-%04d.html'
     pep_cvs_url = ('http://www.gentoo.org/cgi-bin/viewcvs.cgi/'
                    'xml/htdocs/proj/en/glep/glep-%04d.txt?cvsroot=gentoo')
 
@@ -169,16 +169,14 @@ class GLEPHeaders(Headers):
                     pepno = int(refpep)
                     newbody.append(nodes.reference(
                         refpep, refpep,
-                        refuri=(self.document.settings.pep_base_url
-                                + self.pep_url % pepno)))
+                        refuri=self.pep_url % pepno))
                     newbody.append(space)
                 para[:] = newbody[:-1] # drop trailing space
             elif name == 'Content-Type':
                 pep_type = para.astext()
                 if pep_type != 'text/x-rst':
                     raise DataError('Incorrect Content-Type: %s' % pep_type)
-                uri = self.document.settings.pep_base_url + 'glep-0002.html'
-                para[:] = [nodes.reference('', pep_type, refuri=uri)]
+                para[:] = [nodes.reference('', pep_type, refuri=(self.pep_url % 2))]
 
         if required_fields - seen:
             raise DataError('Missing GLEP header field(s): %s' % ', '.join(required_fields - seen))
