@@ -177,7 +177,7 @@ class GLEPHeaders(Headers):
                 pep_type = para.astext()
                 if pep_type != 'text/x-rst':
                     raise DataError('Incorrect Content-Type: %s' % pep_type)
-                uri = 'glep-0002.html'
+                uri = self.document.settings.pep_base_url + 'glep-0002.html'
                 para[:] = [nodes.reference('', pep_type, refuri=uri)]
 
         if required_fields - seen:
