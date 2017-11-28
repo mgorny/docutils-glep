@@ -69,8 +69,6 @@ class GLEPHeaders(Headers):
     """
 
     pep_url = 'https://www.gentoo.org/glep/glep-%04d.html'
-    pep_cvs_url = ('http://www.gentoo.org/cgi-bin/viewcvs.cgi/'
-                   'xml/htdocs/proj/en/glep/glep-%04d.txt?cvsroot=gentoo')
 
     def apply(self):
         """Override.
@@ -95,10 +93,8 @@ class GLEPHeaders(Headers):
                 value = field[1].astext()
                 try:
                     pep = int(value)
-                    cvs_url = self.pep_cvs_url % pep
                 except ValueError:
                     pep = value
-                    cvs_url = None
                     msg = self.document.reporter.warning(
                         '"GLEP" header must contain an integer; "%s" is an '
                         'invalid value.' % pep, base_node=field)
