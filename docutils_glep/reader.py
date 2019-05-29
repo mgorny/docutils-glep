@@ -36,7 +36,7 @@ class PreambledRstParser(rst.Parser):
                 pass
             else:
                 try:
-                    yaml.load(spl[1])
+                    yaml.safe_load(spl[1])
                 except Exception as e:
                     raise DataError('Header preamble is not valid YAML:\n%s' % e)
             # remove ---s to let regular parser handle it
