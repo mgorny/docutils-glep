@@ -1,13 +1,13 @@
 #!/usr/bin/python
 # docutils GLEP support
-# Copyright (c) 2017 Gentoo Foundation
+# Copyright (c) 2019 Gentoo Authors
 # Placed in public domain
 
 from setuptools import find_packages, setup
 
 setup(
     name='docutils_glep',
-    version='1.1',
+    version='1.2',
     description='docutils modules & wrapper to process Gentoo Linux Extension Proposals',
 
     author='Gentoo Foundation',
