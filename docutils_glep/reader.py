@@ -18,6 +18,8 @@ __docformat__ = 'reStructuredText'
 
 from email.message import EmailMessage
 
+import re
+
 import yaml
 
 from docutils import DataError
@@ -29,6 +31,8 @@ from docutils_glep.transforms import GLEPHeaders
 
 class PreambledRstParser(rst.Parser):
     """GLEP parser class capable of reading YAML preamble."""
+
+    ESCAPE_RE = re.compile(r'([`~!#$%^&*\(\)-+=\[\]\{\};:.\'"<>?/|\\])')
 
     def parse(self, inputstring, document):
         if inputstring.startswith('---\n'):
@@ -42,7 +46,7 @@ class PreambledRstParser(rst.Parser):
             for k, v in yaml_data.items():
                 if v is None:
                     v = ""
-                rfc_header[k] = str(v)
+                rfc_header[k] = self.ESCAPE_RE.sub(r"\\\1", str(v))
             inputstring = str(rfc_header) + glep_text
 
         super(PreambledRstParser, self).parse(inputstring, document)
