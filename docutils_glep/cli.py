@@ -31,7 +31,11 @@ def main():
 
     publish_cmdline(reader_name='docutils_glep',
                     writer_name='docutils_glep',
-                    description=description)
+                    description=description,
+                    settings_overrides={
+                        "pep_references": None,
+                        "rfc_references": None,
+                    })
 
 if __name__ == '__main__':
     main()
