@@ -38,4 +38,5 @@ class Writer(pep_html.Writer):
         'generator': '1',
         'datestamp': '%Y-%m-%d %H:%M UTC',
         'source_link': '1',
+        'table_style': 'table table-bordered',
         }

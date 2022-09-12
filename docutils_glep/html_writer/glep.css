@@ -80,6 +80,15 @@ THE SOFTWARE.
 	border-color: #ebccd1;
 }
 
+.table {
+	width: auto;
+}
+
+table.table > tbody > tr > td,
+table.table > tbody > tr > th {
+	vertical-align: middle;
+}
+
 /*
 the following bits are copied from:
 
