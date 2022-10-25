@@ -1,4 +1,7 @@
 .document .contents .topic-title {
+	/* same font family and weight as in h2 heading */
+	font-family: Bitter, 'Open Sans', sans-serif;
+	font-weight: 400;
 	font-size: 25px;
 }
 
