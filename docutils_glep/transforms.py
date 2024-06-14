@@ -59,7 +59,7 @@ valid_statuses = frozenset((
     'Replaced',
     'Moribund'))
 
-version_regex = re.compile('\d+(\.\d+)?')
+version_regex = re.compile(r'\d+(\.\d+)?')
 
 
 class GLEPHeaders(Headers):
@@ -161,7 +161,7 @@ class GLEPHeaders(Headers):
             elif name in ('Replaces', 'Replaced-By', 'Requires'):
                 newbody = []
                 space = nodes.Text(' ')
-                for refpep in re.split(',?\s+', body.astext()):
+                for refpep in re.split(r',?\s+', body.astext()):
                     pepno = int(refpep)
                     newbody.append(nodes.reference(
                         refpep, refpep,
